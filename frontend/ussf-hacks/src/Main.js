@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ScoreBoard from './ScoreBoard';
 import PatternTable from './PatternTable';
+import Field from './Field'
 
 const styles = theme => ({
   root: {
@@ -24,15 +25,25 @@ function Main(props) {
   return (
     <div className={classes.root} >
       <Grid container spacing={24}>
+      <Grid item xs={12} sm={12}>
+      <Paper className={classes.paper}>
+        hi
+      </Paper>
+      </Grid>
+        
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper}>
-            <ScoreBoard />
+            <Grid container spacing={12}>
+              <Grid item xs={12} sm={12}>
+                <ScoreBoard />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Field />
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>Field Here</Paper>
-        </Grid>
-        <Grid item xs={12} sm={12}>
             <PatternTable />
         </Grid>
       </Grid>
