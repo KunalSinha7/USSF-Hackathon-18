@@ -10,6 +10,7 @@
     "react-device-detect": "^1.5.8",
     "react-dom": "^16.4.1",
     "react-scripts": "1.1.4",
+    "react-select": "^1.2.1",
     "recharts": "^1.0.1",
     "sport-stats": "git+https://github.com/alexadam/sport-stats.git",
     "three": "^0.94.0",
