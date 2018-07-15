@@ -1,0 +1,59 @@
+create table chain_table_temp as
+select
+	--a.*, b.*
+	a.game_id
+	,d.fixture_name
+	,a.player || ' - ' || b.player || ' - ' || c.player as name
+	,count(distinct a.unique_id) as total_occurrences
+from 
+	r_final_results a
+	left outer join r_final_results b on a.unique_id = b.unique_id and cast(a.keep_track as int) + 1 = cast(b.keep_track as int)
+	left outer join r_final_results c on a.unique_id = c.unique_id and cast(a.keep_track as int) + 2 = cast(c.keep_track as int)
+	left outer join fixtures_list d on a.game_id = d.game_id
+where
+	cast(a.keep_track as int) = 1
+group by
+	a.game_id
+	,d.fixture_name
+	,a.player || ' - ' || b.player || ' - ' || c.player
+
+
+insert into chain_table
+ 
+select 
+	a.*, cast(1 as int) as rank
+from 
+	chain_table_temp a
+
+--create table grid_coordinates_unique_id as
+select
+	--a.*, b.*
+	distinct
+	a.unique_id
+	,a.player || ' - ' || b.player || ' - ' || c.player as name
+from 
+	r_final_results a
+	left outer join r_final_results b on a.unique_id = b.unique_id and cast(a.keep_track as int) + 1 = cast(b.keep_track as int)
+	left outer join r_final_results c on a.unique_id = c.unique_id and cast(a.keep_track as int) + 2 = cast(c.keep_track as int)
+	left outer join fixtures_list d on a.game_id = d.game_id
+where
+	cast(a.keep_track as int) = 1
+
+
+create table grid_coordinates as
+select
+	cast(a.unique_id as int) as unique_id
+	,c.fixture_name
+	,b.name
+	,a.x
+	,a.y
+	,a.keep_track as g 
+from
+	r_final_results a
+	left outer join grid_coordinates_unique_id b on cast(a.unique_id as int) = cast(b.unique_id as int)
+	left outer join fixtures_list c on a.game_id = c.game_id
+where
+	cast(a.unique_id as int) > 0
+	and c.team_name = 'Seattle Sounders FC'
+order by
+	cast(a.unique_id as int), cast(a.keep_track as int)

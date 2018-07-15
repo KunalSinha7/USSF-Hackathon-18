@@ -81,7 +81,7 @@ class Main extends React.Component {
   };
 
   handleFieldData = (names) => {
-    axios.get('http://localhost:7000/post/field/data/' + names)
+    axios.get('http://localhost:7000/post/field/data/' + names + '/' + this.state.selectedFixture)
     .then((res) => {
       this.setState({
         fieldData: res.data
@@ -149,7 +149,7 @@ class Main extends React.Component {
             <Paper className={classes.paper}>
               <Grid container spacing={12}>
                 <Grid item xs={12} sm={12}>
-                  <ScoreBoard homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
+                  {/* <ScoreBoard homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} /> */}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Field data={this.state.fieldData} />

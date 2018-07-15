@@ -50,11 +50,12 @@ app.get('/post/pattern/data/:fixture', async (req, res, next) => {
     }
 });
 
-app.get('/post/field/data/:names', async (req, res, next) => {
+app.get('/post/field/data/:names/:fixture', async (req, res, next) => {
     const db = await dbPromise;
     try {
-        const coordsData = await db.all("select x,y,10 as z from grid_coordinates a inner join chain_table b on a.name = b.name "+
-        "where b.name = \'" + req.params.names+  "\'");
+        const coordsData = await db.all("select x,y,g, 10 as z  from grid_coordinates a inner join chain_table b on a.name = b.name "+
+        " and a.fixture_name=b.fixture_name where b.name = \'" + req.params.names+  "\' and b.fixture_name = \'" + req.params.fixture+  "\'"+
+        " order by unique_id, g");
         console.log(coordsData);
         res.send(coordsData);
     } catch(err) {
