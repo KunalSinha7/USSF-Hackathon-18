@@ -15,22 +15,22 @@ const styles = theme => ({
     overflowX: 'auto',
   },
   table: {
-    minWidth: 700,
+    textAlign: "left"
   },
 });
 
 let id = 0;
-function createData(name, calories, fat, carbs, protein) {
+function createData(rank, pattern, occurences) {
   id += 1;
-  return { id, name, calories, fat, carbs, protein };
+  return { rank, pattern, occurences};
 }
 
 const data = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('1', "Marcelo, Kroos, Modric", 16),
+  createData('2', "Marcelo, Casemiro, Ronaldo", 9),
+  createData('3', "Ramos, Casemiro, Kroos", 6),
+  createData('4', "Modric, Benzema, Modric", 3),
+  createData('5', "Casemiro, Kroos, Isco", 1),
 ];
 
 function PatternTable(props) {
@@ -41,24 +41,20 @@ function PatternTable(props) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>id</TableCell>
+            <TableCell>Rank</TableCell>
             <TableCell numeric>Pattern</TableCell>
             <TableCell numeric>Occurences</TableCell>
-            <TableCell numeric>Carbs (g)</TableCell>
-            <TableCell numeric>Protein (g)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map(n => {
             return (
-              <TableRow key={n.id}>
+              <TableRow key={n.rank}>
                 <TableCell component="th" scope="row">
-                  {n.name}
+                  {n.rank}
                 </TableCell>
-                <TableCell numeric>{n.calories}</TableCell>
-                <TableCell numeric>{n.fat}</TableCell>
-                <TableCell numeric>{n.carbs}</TableCell>
-                <TableCell numeric>{n.protein}</TableCell>
+                <TableCell numeric>{n.pattern}</TableCell>
+                <TableCell numeric>{n.occurences}</TableCell>
               </TableRow>
             );
           })}

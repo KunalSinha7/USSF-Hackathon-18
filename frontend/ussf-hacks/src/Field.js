@@ -25,11 +25,11 @@ function JointLineScatterChart(props) {
                     <YAxis type="number" dataKey={'y'} name='weight' stroke="#ffffff"/>
                 <ZAxis dataKey={'z'} range={[0, 400]} name='score' unit='km'/>
                     <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+                <ReferenceDot x={50} y={50} r={40} fill="green" stroke="white" /> }
                 <ReferenceLine x={100} stroke="white"/>
                 <ReferenceLine x={0} stroke="white"/>
                 <ReferenceLine x={50} stroke="white"/>
                 <ReferenceLine y={100} stroke="white"/>
-                <ReferenceDot x={50} y={50} r={40} fill="green" stroke="white" /> }
                 <ReferenceLine y={0} stroke="white"/>
                     <Scatter name='Cluster #1' data={data01} fill='#D6A4A4' line shape="circle"><LabelList dataKey="g"/></Scatter>
                     <Scatter name='Field' data={data03} fill='#ffffff' line shape="circle"><LabelList dataKey="g" /></Scatter>

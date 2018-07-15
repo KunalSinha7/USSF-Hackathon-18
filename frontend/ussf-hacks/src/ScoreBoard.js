@@ -17,12 +17,12 @@ const styles = theme => ({
 
 function ScoreBoard(props) {
   const { classes } = props;
- 
+
   return (
     <div className={classes.root} >
         <Grid container spacing={12}>
             <Grid item xs={6} sm={3}>
-                <h2>Team 1</h2>
+                <h2>{props.homeTeam}</h2>
                 <p>Home</p>
             </Grid>
             <Grid item xs={6} sm={3}>
@@ -32,7 +32,7 @@ function ScoreBoard(props) {
                 <h1>0</h1>
             </Grid>
             <Grid item xs={6} sm={3}>
-                <h2>Team 2</h2>
+                <h2>{props.awayTeam}</h2>
                 <p>Away</p>
             </Grid>
         </Grid>

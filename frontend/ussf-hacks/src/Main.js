@@ -8,6 +8,7 @@ import PatternTable from './PatternTable';
 import Field from './Field'
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -54,12 +55,62 @@ const rangesFixtures = [
 class Main extends React.Component {
   state = {
     selectedTeam: '',
-    selectedFixture: ''
+    selectedFixture: '',
+    secondaryTeam: '',
+    homeTeam: 'Home Team',
+    awayTeam: 'Away Team',
+    teamsList: [],
+    fixtureList: [],
+    left: false,
   };
 
   handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value });
+    let that=this;
+    
+    this.setState({ [prop]: event.target.value }, () => {
+      if(prop == 'selectedTeam') {
+        axios.get('http://localhost:7000/post/fixtures/' + that.state.selectedTeam)
+        .then((res) =>  {
+          this.setState({
+            fixtureList: res.data
+          })
+        }).catch((err) => {
+          console.log(err)
+        })
+      } else if(prop == 'selectedFixture') {
+        let homeTeam = '';
+        let awayTeam = '';
+        let secondaryTeam = this.state.selectedFixture.substring(2, this.state.selectedFixture.indexOf('(')).trim();
+        if(this.state.selectedFixture != null && this.state.selectedFixture != '' && this.state.selectedTeam != null && this.state.selectedTeam) {
+          if(this.state.selectedFixture.charAt(0) == '@') {
+            homeTeam = secondaryTeam;
+            awayTeam = this.state.selectedTeam;
+          } else {
+            homeTeam = this.state.selectedTeam;
+            awayTeam = secondaryTeam;
+          }
+        }
+
+        this.setState({
+          "homeTeam": homeTeam,
+          "awayTeam": awayTeam
+        })
+
+      }
+    });
   };
+
+  componentDidMount = () => {
+    let that = this;
+    axios.get('http://localhost:7000/get/teams')
+    .then((res) => {
+      this.setState({
+        teamsList: res.data
+      })
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
   render() {
     const { classes } = this.props;
@@ -78,9 +129,9 @@ class Main extends React.Component {
                 style={{width: "80vmin"}}
                 onChange={this.handleChange('selectedTeam')}
               >
-                {rangesTeam.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                {this.state.teamsList.map(option => (
+                  <MenuItem key={option.team_name} value={option.team_name}>
+                    {option.team_name}
                   </MenuItem>
                 ))}
               </TextField>
@@ -88,14 +139,14 @@ class Main extends React.Component {
             <Grid item xs={12} sm={6}>
               <TextField
                 select
-                label={"Select Fixture to Examine"}
+                label={"Select Fixture to Examine (After picking team)"}
                 value={this.state.selectedFixture}
                 style={{width: "80vmin"}}
                 onChange={this.handleChange('selectedFixture')}
               >
-                {rangesFixtures.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                {this.state.fixtureList.map(option => (
+                  <MenuItem key={option.fixture_name} value={option.fixture_name}>
+                    {option.fixture_name}
                   </MenuItem>
                 ))}
               </TextField>
@@ -107,7 +158,7 @@ class Main extends React.Component {
             <Paper className={classes.paper}>
               <Grid container spacing={12}>
                 <Grid item xs={12} sm={12}>
-                  <ScoreBoard />
+                  <ScoreBoard homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Field />
