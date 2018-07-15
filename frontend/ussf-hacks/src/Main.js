@@ -23,7 +23,6 @@ const styles = theme => ({
 });
 
 
-
 class Main extends React.Component {
   state = {
     selectedTeam: '',
@@ -34,7 +33,8 @@ class Main extends React.Component {
     teamsList: [],
     fixtureList: [],
     left: false,
-    data: []
+    data: [],
+    fieldData: []
   };
 
   handleChange = prop => (event) => {
@@ -66,7 +66,7 @@ class Main extends React.Component {
 
         axios.get('http://localhost:7000/post/pattern/data/' + this.state.selectedFixture)
         .then((res) => {
-          this.setState({data: res.data}, ()=> console.log("axios", this.state.data))
+          this.setState({data: res.data})
         }).catch((err) => {
           console.log(err)
         })
@@ -79,6 +79,17 @@ class Main extends React.Component {
       }
     });
   };
+
+  handleFieldData = (names) => {
+    axios.get('http://localhost:7000/post/field/data/' + names)
+    .then((res) => {
+      this.setState({
+        fieldData: res.data
+      }, ()=>console.log("field data", this.state.fieldData))
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   componentDidMount = () => {
     let that = this;
@@ -141,13 +152,13 @@ class Main extends React.Component {
                   <ScoreBoard homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Field />
+                  <Field data={this.state.fieldData} />
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-              <PatternTable data={this.state.data}/>
+              <PatternTable data={this.state.data} handleFieldData={this.handleFieldData}/>
           </Grid>
         </Grid>
       </div>
