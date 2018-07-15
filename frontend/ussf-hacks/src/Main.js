@@ -22,35 +22,7 @@ const styles = theme => ({
   },
 });
 
-const rangesTeam = [
-  {
-    value: '1',
-    label: 'Man City',
-  },
-  {
-    value: '2',
-    label: 'Man Utd',
-  },
-  {
-    value: '3',
-    label: 'Liverpool ',
-  },
-];
 
-const rangesFixtures = [
-  {
-    value: '1',
-    label: 'away v. Tottenham',
-  },
-  {
-    value: '2',
-    label: 'home v. Chelsea',
-  },
-  {
-    value: '3',
-    label: 'home v. Arsenal',
-  },
-];
 
 class Main extends React.Component {
   state = {
@@ -62,9 +34,10 @@ class Main extends React.Component {
     teamsList: [],
     fixtureList: [],
     left: false,
+    data: []
   };
 
-  handleChange = prop => event => {
+  handleChange = prop => (event) => {
     let that=this;
     
     this.setState({ [prop]: event.target.value }, () => {
@@ -90,6 +63,13 @@ class Main extends React.Component {
             awayTeam = secondaryTeam;
           }
         }
+
+        axios.get('http://localhost:7000/post/pattern/data/' + this.state.selectedFixture)
+        .then((res) => {
+          this.setState({data: res.data}, ()=> console.log("axios", this.state.data))
+        }).catch((err) => {
+          console.log(err)
+        })
 
         this.setState({
           "homeTeam": homeTeam,
@@ -167,7 +147,7 @@ class Main extends React.Component {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-              <PatternTable />
+              <PatternTable data={this.state.data}/>
           </Grid>
         </Grid>
       </div>

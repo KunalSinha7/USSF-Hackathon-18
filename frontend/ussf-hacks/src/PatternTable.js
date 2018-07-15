@@ -35,7 +35,7 @@ const data = [
 
 function PatternTable(props) {
   const { classes } = props;
-
+  console.log("table", props.data)
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -43,18 +43,18 @@ function PatternTable(props) {
           <TableRow>
             <TableCell>Rank</TableCell>
             <TableCell numeric>Pattern</TableCell>
-            <TableCell numeric>Occurences</TableCell>
+            <TableCell numeric>Occurrences</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(n => {
+          {props.data.map(n => {
             return (
-              <TableRow key={n.rank}>
+              <TableRow key={n.rank} hover={true} onClick={() => this.handleRowClick()}>
                 <TableCell component="th" scope="row">
                   {n.rank}
                 </TableCell>
-                <TableCell numeric>{n.pattern}</TableCell>
-                <TableCell numeric>{n.occurences}</TableCell>
+                <TableCell numeric>{n.name}</TableCell>
+                <TableCell numeric>{n.occurrences}</TableCell>
               </TableRow>
             );
           })}
